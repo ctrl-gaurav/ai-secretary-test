@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Procedures - AI Secretary Test Plan | ASRO Team</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">
+                <h1>ASRO Team</h1>
+                <p class="subtitle">Agentic Slurm Resource Optimizer</p>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="test-scope.html">Test Scope</a></li>
+                <li><a href="integration-builds.html">Integration Builds</a></li>
+                <li><a href="test-procedures.html" class="active">Test Procedures</a></li>
+                <li><a href="validation-tests.html">Validation Tests</a></li>
+                <li><a href="team.html">Team</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container page-content">
+        <div class="page-header">
+            <h1>Test Procedures for Each Build</h1>
+            <p class="page-description">
+                Detailed test case skeletons, test environment requirements, and overhead software for all four integration builds
+            </p>
+        </div>
+
+        <section class="content-card">
+            <h2>Test Procedure Structure</h2>
+            <p>
+                For each integration build, we provide:
+            </p>
+            <ul>
+                <li><strong>Build Purpose:</strong> Primary testing objectives and characteristics under test</li>
+                <li><strong>Test Case Skeletons:</strong> Structured descriptions of test scenarios without specific data values</li>
+                <li><strong>Test Environment:</strong> Hardware, software, network, and account requirements</li>
+                <li><strong>Overhead Software:</strong> Drivers, stubs, mocks, and test harnesses needed</li>
+            </ul>
+        </section>
+
+        <!-- BUILD 1 -->
+        <section class="build-test-section">
+            <div class="build-test-header">
+                <span class="build-badge">Build 1</span>
+                <h2>Input Capture and Understanding Pipeline</h2>
+            </div>
+
+            <div class="test-purpose">
+                <h3>Build Purpose</h3>
+                <p>
+                    Validate the input processing pipeline from user input (voice/text) through transcription and
+                    intent extraction. Focus on streaming latency, multi-modal input handling, and intent classification
+                    accuracy. Verify NFR-1 (response latency), NFR-3 (portability), and FR-1 through FR-4.
+                </p>
+            </div>
+
+            <div class="test-cases">
+                <h3>Test Case Skeletons</h3>
+
+                <div class="test-case">
+                    <h4>TC-B1-001: Voice Input End-to-End Flow (Desktop)</h4>
+                    <div class="test-case-details">
+                        <p><strong>Objective:</strong> Verify complete voice input pipeline on desktop client</p>
+                        <p><strong>Prerequisites:</strong> Desktop client installed, microphone configured, network connectivity</p>
+                        <p><strong>Test Steps:</strong></p>
+                        <ol>
+                            <li>Launch desktop client and enable voice activation</li>
+                            <li>Speak wake word to activate listening mode</li>
+                            <li>Issue a voice command (e.g., calendar-related intent)</li>
+                            <li>Observe interim transcripts appearing in client UI</li>
+                            <li>Wait for final transcript and NLU output</li>
+                            <li>Verify intent and entities are correctly extracted</li>
+                        </ol>
+                        <p><strong>Expected Outcomes:</strong></p>
+                        <ul>
+                            <li>Wake word triggers listening state within 500ms</li>
+                            <li>Interim transcripts stream progressively (partial results visible)</li>
+                            <li>Final transcript matches spoken command</li>
+                            <li>NLU correctly identifies intent and extracts entities</li>
+                            <li>End-to-end latency from speech end to NLU output &lt; 2 seconds</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="test-case">
+                    <h4>TC-B1-002: Text Input Processing (Web Client)</h4>
+                    <div class="test-case-details">
+                        <p><strong>Objective:</strong> Verify text input alternative on web client</p>
+                        <p><strong>Prerequisites:</strong> Web client accessible via browser, network connectivity</p>
+                        <p><strong>Test Steps:</strong></p>
+                        <ol>
+                            <li>Open web client in browser</li>
+                            <li>Type a command in text input field (e.g., "Schedule a meeting tomorrow at 3pm")</li>
+                            <li>Submit command</li>
+                            <li>Verify NLU processing occurs (bypassing ASR)</li>
+                            <li>Confirm intent and entities extracted</li>
+                        </ol>
+                        <p><strong>Expected Outcomes:</strong></p>
+                        <ul>
+                            <li>Text input accepted and transmitted to Gateway</li>
+                            <li>ASR step bypassed (text goes directly to NLU)</li>
+                            <li>Intent classification correct</li>
+                            <li>Entities (date: "tomorrow", time: "3pm") extracted with normalized values</li>
+                            <li>Response latency &lt; 1 second (faster than voice due to no ASR)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="test-case">
+                    <h4>TC-B1-003: Multi-Platform Voice Input Consistency</h4>
+                    <div class="test-case-details">
+                        <p><strong>Objective:</strong> Verify identical voice commands produce consistent results across platforms</p>
+                        <p><strong>Prerequisites:</strong> Desktop, mobile, and web clients available</p>
+                        <p><strong>Test Steps:</strong></p>
+                        <ol>
+                            <li>Record identical voice command audio sample</li>
+                            <li>Play audio through desktop client microphone</li>
+                            <li>Capture NLU output (intent + entities)</li>
+                            <li>Repeat steps 2-3 for mobile client</li>
+                            <li>Repeat steps 2-3 for web client</li>
+                            <li>Compare NLU outputs across all three platforms</li>
+                        </ol>
+                        <p><strong>Expected Outcomes:</strong></p>
+                        <ul>
+                            <li>Intent classification identical across all platforms</li>
+                            <li>Entity extraction consistent (same entities, same normalized values)</li>
+                            <li>Latency within 10% variance across platforms</li>
+                            <li>No platform-specific errors or crashes</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="test-case">
+                    <h4>TC-B1-004: Low Confidence Intent Handling</h4>
+                    <div class="test-case-details">
+                        <p><strong>Objective:</strong> Verify system behavior when NLU confidence is below threshold</p>
+                        <p><strong>Prerequisites:</strong> Client configured, test corpus of ambiguous utterances prepared</p>
+                        <p><strong>Test Steps:</strong></p>
+                        <ol>
+                            <li>Input ambiguous or unclear command (text or voice)</li>
+                            <li>Observe NLU confidence score returned</li>
+                            <li>Verify stub orchestrator receives low-confidence signal</li>
+                            <li>Confirm clarification workflow is triggered (via stub response)</li>
+                        </ol>
+                        <p><strong>Expected Outcomes:</strong></p>
+                        <ul>
+                            <li>NLU returns confidence score below threshold (e.g., &lt;0.7)</li>
+                            <li>System does not auto-execute action</li>
+                            <li>Stub orchestrator logs clarification trigger event</li>
+                            <li>Response indicates need for disambiguation (in Build 2, this will prompt user)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="test-case">
+                    <h4>TC-B1-005: Network Interruption During Voice Input</h4>
+                    <div class="test-case-details">
+                        <p><strong>Objective:</strong> Test resilience to network failures during audio streaming</p>
+                        <p><strong>Prerequisites:</strong> Network simulation tools to induce packet loss or disconnection</p>
+                        <p><strong>Test Steps:</strong></p>
+                        <ol>
+                            <li>Begin voice input on client</li>
+                            <li>Simulate network interruption mid-utterance</li>
+                            <li>Observe client behavior (reconnection attempt, error message)</li>
+                            <li>Restore network</li>
+                            <li>Retry voice input</li>
+                        </ol>
+                        <p><strong>Expected Outcomes:</strong></p>
+                        <ul>
+                            <li>Client detects WebSocket disconnection</li>
+                            <li>User receives clear error message (e.g., "Network connection lost")</li>
+                            <li>Client automatically attempts reconnection with exponential backoff</li>
+                            <li>After reconnection, subsequent commands succeed</li>
+                            <li>No client crash or infinite retry loops</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="test-case">
+                    <h4>TC-B1-006: API Gateway Rate Limiting</h4>
+                    <div class="test-case-details">
+                        <p><strong>Objective:</strong> Verify Gateway enforces rate limits correctly</p>
+                        <p><strong>Prerequisites:</strong> Gateway configured with rate limit policy (e.g., 10 requests/second)</p>
+                        <p><strong>Test Steps:</strong></p>
+                        <ol>
+                            <li>Send burst of requests exceeding rate limit from test harness</li>
+                            <li>Observe Gateway responses</li>
+                            <li>Verify proper HTTP status codes returned</li>
+                            <li>Wait for rate limit window to reset</li>
+                            <li>Retry requests</li>
+                        </ol>
+                        <p><strong>Expected Outcomes:</strong></p>
+                        <ul>
+                            <li>First N requests (within limit) succeed (HTTP 200)</li>
+                            <li>Excess requests return HTTP 429 (Too Many Requests)</li>
+                            <li>Rate limit headers present in responses (e.g., X-RateLimit-Remaining)</li>
+                            <li>After window reset, requests succeed again</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="test-environment">
+                <h3>Test Environment</h3>
+                <ul>
+                    <li><strong>Hardware:</strong> Standard consumer laptop/desktop (Windows/Mac), iOS/Android mobile device, modern web browser (Chrome, Firefox, Safari)</li>
+                    <li><strong>Software:</strong> Desktop client build, mobile app APK/IPA, web client URL, API Gateway deployed endpoint</li>
+                    <li><strong>Network:</strong> Stable broadband connection (100+ Mbps), network simulation tools (tc, comcast) for fault injection</li>
+                    <li><strong>Accounts:</strong> Test user account with valid authentication credentials</li>
+                    <li><strong>External Services:</strong> ASR service endpoint (cloud or local), NLU service endpoint</li>
+                </ul>
+            </div>
+
+            <div class="overhead-software">
+                <h3>Overhead Software (Drivers, Stubs, Mocks)</h3>
+                <ul>
+                    <li><strong>Stub Orchestrator:</strong> Minimal service that receives NLU output and logs it (replacing real Orchestrator/Planner)</li>
+                    <li><strong>Test Harness:</strong> Automated script to generate varied voice/text inputs and measure latencies</li>
+                    <li><strong>Mock External Services:</strong> If using real ASR/NLU is impractical, mock services returning canned responses for known inputs</li>
+                    <li><strong>Network Simulator:</strong> Tools like tc (Linux traffic control) or Comcast (network link conditioner) to simulate latency, packet loss, disconnection</li>
+                    <li><strong>Logging Aggregator:</strong> Centralized logging (e.g., ELK stack) to collect logs from Client, Gateway, ASR, NLU for debugging</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- BUILD 2 -->
+        <section class="build-test-section">
+            <div class="build-test-header">
+                <span class="build-badge">Build 2</span>
+                <h2>Orchestration, Planning, and Context Management</h2>
+            </div>
+
+            <div class="test-purpose">
+                <h3>Build Purpose</h3>
+                <p>
+                    Validate orchestration logic, plan generation, multi-turn dialogs, confirmation workflows, and context
+                    persistence. Focus on correct step graph creation, policy enforcement, session continuity, and
+                    event-driven message handling. Verify FR-6 (calendar), FR-8 (notes), FR-9 (tasks), FR-11 (confirmation),
+                    FR-12 (session memory).
+                </p>
+            </div>
+
+            <div class="test-cases">
+                <h3>Test Case Skeletons</h3>
+
+                <div class="test-case">
+                    <h4>TC-B2-001: Simple Intent to Plan Conversion</h4>
+                    <div class="test-case-details">
+                        <p><strong>Objective:</strong> Verify Planner generates correct step graph for single-step intent</p>
+                        <p><strong>Prerequisites:</strong> Orchestrator and Planner integrated, Context Store stubbed</p>
+                        <p><strong>Test Steps:</strong></p>
+                        <ol>
+                            <li>Send NLU output with intent "CreateReminder" and entities (time, description) to Orchestrator</li>
+                            <li>Orchestrator invokes Planner</li>
+                            <li>Planner returns step graph</li>
+                            <li>Verify step graph structure and dependencies</li>
+                        </ol>
+                        <p><strong>Expected Outcomes:</strong></p>
+                        <ul>
+                            <li>Step graph contains one step: "CreateReminderAction"</li>
+                            <li>Step includes idempotency key, parameters (time, description)</li>
+                            <li>No dependencies or compensating actions (simple case)</li>
+                            <li>Orchestrator logs plan acceptance</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="test-case">
+                    <h4>TC-B2-002: Multi-Step Plan with Dependencies</h4>
+                    <div class="test-case-details">
+                        <p><strong>Objective:</strong> Verify Planner handles complex intents requiring multiple ordered steps</p>
+                        <p><strong>Prerequisites:</strong> Orchestrator-Planner integration active</p>
+                        <p><strong>Test Steps:</strong></p>
+                        <ol>
+                            <li>Send intent "ScheduleMeetingWithNotes" (requires: find free time, create event, attach notes)</li>
+                            <li>Planner generates multi-step graph</li>
+                            <li>Verify step ordering and dependencies</li>
+                        </ol>
+                        <p><strong>Expected Outcomes:</strong></p>
+                        <ul>
+                            <li>Step 1: QueryFreeBusy (no dependencies)</li>
+                            <li>Step 2: CreateCalendarEvent (depends on Step 1)</li>
+                            <li>Step 3: AttachNotes (depends on Step 2)</li>
+                            <li>Each step has unique idempotency key</li>
+                            <li>Compensating actions defined (e.g., DeleteEvent if AttachNotes fails)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="test-case">
+                    <h4>TC-B2-003: Confirmation Workflow for High-Risk Action</h4>
+                    <div class="test-case-details">
+                        <p><strong>Objective:</strong> Verify Policy Guard triggers confirmation for email/message sending</p>
+                        <p><strong>Prerequisites:</strong> Orchestrator, Planner, Policy Guard integrated; Client stub for receiving prompts</p>
+                        <p><strong>Test Steps:</strong></p>
+                        <ol>
+                            <li>Send intent "SendEmail" with recipient and message body</li>
+                            <li>Planner generates step graph with SendEmailAction</li>
+                            <li>Orchestrator passes plan to Policy Guard</li>
+                            <li>Policy Guard identifies high-risk action</li>
+                            <li>Orchestrator sends confirmation prompt to Client stub</li>
+                            <li>Client stub sends approval response</li>
+                            <li>Orchestrator marks plan as approved</li>
+                        </ol>
+                        <p><strong>Expected Outcomes:</strong></p>
+                        <ul>
+                            <li>Policy Guard flags SendEmailAction as requiring confirmation</li>
+                            <li>Confirmation prompt sent to user before execution (in Build 3, action would execute)</li>
+                            <li>Plan execution paused until user responds</li>
+                            <li>Approval triggers plan continuation; rejection aborts plan</li>
+                            <li>All events logged to Audit (plan creation, confirmation request, user response)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="test-case">
+                    <h4>TC-B2-004: Multi-Turn Dialog for Missing Information</h4>
+                    <div class="test-case-details">
+                        <p><strong>Objective:</strong> Verify Orchestrator prompts for missing entities across multiple turns</p>
+                        <p><strong>Prerequisites:</strong> Orchestrator with dialog management active</p>
+                        <p><strong>Test Steps:</strong></p>
+                        <ol>
+                            <li>Send intent "CreateCalendarEvent" with missing time entity</li>
+                            <li>Orchestrator detects incomplete intent</li>
+                            <li>Orchestrator sends prompt: "What time should the event be?"</li>
+                            <li>Client stub sends follow-up with time entity</li>
+                            <li>Orchestrator merges information and generates complete plan</li>
+                        </ol>
+                        <p><strong>Expected Outcomes:</strong></p>
+                        <ul>
+                            <li>Orchestrator identifies missing required parameter (time)</li>
+                            <li>System initiates clarification dialog (not executing incomplete plan)</li>
+                            <li>Follow-up response correctly incorporated into context</li>
+                            <li>Complete plan generated only after all required info collected</li>
+                            <li>Session context maintains conversation state across turns</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="test-case">
+                    <h4>TC-B2-005: Context Retrieval from Previous Session</h4>
+                    <div class="test-case-details">
+                        <p><strong>Objective:</strong> Verify Orchestrator reads session context from Context Store</p>
+                        <p><strong>Prerequisites:</strong> Context Store pre-populated with session data for test user</p>
+                        <p><strong>Test Steps:</strong></p>
+                        <ol>
+                            <li>Initiate new session for existing user</li>
+                            <li>Orchestrator queries Context Store for user session history</li>
+                            <li>Send intent that references previous context (e.g., "Add this to my meeting notes")</li>
+                            <li>Verify Orchestrator resolves "my meeting" using stored context</li>
+                        </ol>
+                        <p><strong>Expected Outcomes:</strong></p>
+                        <ul>
+                            <li>Context Store returns previous session data (recent meetings, tasks, preferences)</li>
+                            <li>Orchestrator successfully resolves ambiguous reference using context</li>
+                            <li>Plan generated with correct entity resolution</li>
+                            <li>No errors or "context not found" failures</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="test-case">
+                    <h4>TC-B2-006: Orchestrator Event-Driven Asynchronous Handling</h4>
+                    <div class="test-case-details">
+                        <p><strong>Objective:</strong> Verify Orchestrator correctly handles concurrent events</p>
+                        <p><strong>Prerequisites:</strong> Load testing tool to send concurrent requests</p>
+                        <p><strong>Test Steps:</strong></p>
+                        <ol>
+                            <li>Send multiple NLU outputs to Orchestrator concurrently (different sessions)</li>
+                            <li>Observe Orchestrator processing (should handle events asynchronously)</li>
+                            <li>Verify each session maintains independent state</li>
+                            <li>Check for race conditions or state corruption</li>
+                        </ol>
+                        <p><strong>Expected Outcomes:</strong></p>
+                        <ul>
+                            <li>All requests processed without blocking</li>
+                            <li>Session isolation maintained (no cross-session data leakage)</li>
+                            <li>Response times remain within acceptable limits (&lt;2s per session)</li>
+                            <li>No deadlocks, race conditions, or crashes</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="test-environment">
+                <h3>Test Environment</h3>
+                <ul>
+                    <li><strong>Software:</strong> Orchestrator service deployed, Planner service deployed, Context Store (database) initialized with test data</li>
+                    <li><strong>Network:</strong> Internal network for module-to-module communication</li>
+                    <li><strong>Database:</strong> Context Store database (PostgreSQL, MongoDB, or similar) with test schema</li>
+                    <li><strong>Logging:</strong> Audit log storage configured (for confirmation/approval events)</li>
+                    <li><strong>Test Data:</strong> Pre-populated session data in Context Store for continuity tests</li>
+                </ul>
+            </div>
+
+            <div class="overhead-software">
+                <h3>Overhead Software (Drivers, Stubs, Mocks)</h3>
+                <ul>
+                    <li><strong>Driver: NLU Output Generator:</strong> Tool to send synthetic NLU outputs (intents, entities) to Orchestrator, bypassing Build 1 modules</li>
+                    <li><strong>Stub: Capability Executors:</strong> Mock executors that accept action commands and return success/failure without performing real operations</li>
+                    <li><strong>Stub: Client Confirmation Handler:</strong> Simulates user approval/rejection responses to confirmation prompts</li>
+                    <li><strong>Mock: Context Store (optional):</strong> In-memory mock for faster tests, or real DB with test data fixture loader</li>
+                    <li><strong>Test Harness:</strong> Orchestration test framework to automate multi-turn dialog scenarios and concurrent request generation</li>
+                    <li><strong>Audit Log Inspector:</strong> Tool to query and validate audit log entries after tests</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- BUILD 3 -->
+        <section class="build-test-section">
+            <div class="build-test-header">
+                <span class="build-badge">Build 3</span>
+                <h2>Capability Execution and External Integration</h2>
+            </div>
+
+            <div class="test-purpose">
+                <h3>Build Purpose</h3>
+                <p>
+                    Validate capability executors, integration adapters, external service connectivity, retry logic,
+                    idempotency, and audit logging. Focus on calendar operations, email/messaging, notes, tasks, OAuth
+                    authentication, and fault isolation. Verify FR-6, FR-8, FR-9, FR-11, NFR-2 (security), NFR-6
+                    (fault tolerance), NFR-11 (authentication).
+                </p>
+            </div>
+
+            <div class="test-cases">
+                <h3>Test Case Skeletons</h3>
+
+                <div class="test-case">
+                    <h4>TC-B3-001: Calendar Event Creation via Google Integration</h4>
+                    <div class="test-case-details">
+                        <p><strong>Objective:</strong> Verify Calendar Executor can create events using Google Calendar API</p>
+                        <p><strong>Prerequisites:</strong> Test Google account configured, OAuth tokens provisioned, Orchestrator sends CreateEventAction</p>
+                        <p><strong>Test Steps:</strong></p>
+                        <ol>
+                            <li>Orchestrator dispatches CreateCalendarEvent action to Calendar Executor</li>
+                            <li>Calendar Executor invokes Google Integration Adapter</li>
+                            <li>Adapter authenticates using OAuth token</li>
+                            <li>Adapter calls Google Calendar API to create event</li>
+                            <li>Verify event created in Google Calendar (via API query or manual check)</li>
+                            <li>Executor logs success to Audit</li>
+                        </ol>
+                        <p><strong>Expected Outcomes:</strong></p>
+                        <ul>
+                            <li>Event appears in Google Calendar with correct title, time, attendees</li>
+                            <li>Executor returns success status to Orchestrator</li>
+                            <li>Audit log contains CreateEvent operation with timestamp, user, event ID</li>
+                            <li>No errors or authentication failures</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="test-case">
+                    <h4>TC-B3-002: Idempotent Write (Duplicate Event Prevention)</h4>
+                    <div class="test-case-details">
+                        <p><strong>Objective:</strong> Verify executor prevents duplicate operations using idempotency keys</p>
+                        <p><strong>Prerequisites:</strong> Calendar Executor with idempotency logic implemented</p>
+                        <p><strong>Test Steps:</strong></p>
+                        <ol>
+                            <li>Send CreateCalendarEvent action with idempotency key "key-123"</li>
+                            <li>Event created successfully</li>
+                            <li>Send identical action again with same key "key-123" (simulating retry)</li>
+                            <li>Verify executor detects duplicate and skips creation</li>
+                            <li>Check Google Calendar for number of events created</li>
+                        </ol>
+                        <p><strong>Expected Outcomes:</strong></p>
+                        <ul>
+                            <li>First request creates event</li>
+                            <li>Second request with same key returns success but does NOT create duplicate</li>
+                            <li>Only one event exists in Google Calendar</li>
+                            <li>Audit log shows both requests but indicates second was idempotent skip</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="test-case">
+                    <h4>TC-B3-003: OAuth Token Refresh on Expiration</h4>
+                    <div class="test-case-details">
+                        <p><strong>Objective:</strong> Verify adapter handles expired OAuth tokens gracefully</p>
+                        <p><strong>Prerequisites:</strong> Integration Adapter with token refresh logic, test account with expired token</p>
+                        <p><strong>Test Steps:</strong></p>
+                        <ol>
+                            <li>Configure test account with expired access token (valid refresh token)</li>
+                            <li>Attempt calendar operation via Integration Adapter</li>
+                            <li>Adapter detects 401 Unauthorized from Google API</li>
+                            <li>Adapter uses refresh token to obtain new access token</li>
+                            <li>Adapter retries original operation with new token</li>
+                            <li>Verify operation succeeds</li>
+                        </ol>
+                        <p><strong>Expected Outcomes:</strong></p>
+                        <ul>
+                            <li>First API call fails with 401 (expired token)</li>
+                            <li>Adapter automatically refreshes token without user intervention</li>
+                            <li>Retry succeeds with new token</li>
+                            <li>Total operation latency remains reasonable (&lt;5s including refresh)</li>
+                            <li>No error propagated to user</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="test-case">
+                    <h4>TC-B3-004: Email Sending with Confirmation Audit</h4>
+                    <div class="test-case-details">
+                        <p><strong>Objective:</strong> Verify Email Executor sends emails and logs to Audit</p>
+                        <p><strong>Prerequisites:</strong> Email Executor, IMAP/SMTP adapter, test email account</p>
+                        <p><strong>Test Steps:</strong></p>
+                        <ol>
+                            <li>Orchestrator sends SendEmailAction (recipient, subject, body) marked as "confirmed"</li>
+                            <li>Email Executor invokes Email Integration Adapter</li>
+                            <li>Adapter sends email via SMTP</li>
+                            <li>Verify email received in recipient inbox</li>
+                            <li>Check Audit log for SendEmail operation record</li>
+                        </ol>
+                        <p><strong>Expected Outcomes:</strong></p>
+                        <ul>
+                            <li>Email delivered successfully to recipient</li>
+                            <li>Email content matches action parameters</li>
+                            <li>Audit log contains: timestamp, user ID, recipient (redacted or hashed for privacy), action outcome</li>
+                            <li>Executor returns success to Orchestrator</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="test-case">
+                    <h4>TC-B3-005: Retry Logic on Transient Failure</h4>
+                    <div class="test-case-details">
+                        <p><strong>Objective:</strong> Verify executor retries operations on transient errors with exponential backoff</p>
+                        <p><strong>Prerequisites:</strong> Mock adapter that returns 503 (service unavailable) on first N attempts</p>
+                        <p><strong>Test Steps:</strong></p>
+                        <ol>
+                            <li>Configure mock adapter to fail first 2 requests with 503, succeed on 3rd</li>
+                            <li>Send action to executor</li>
+                            <li>Observe executor retry behavior</li>
+                            <li>Measure retry delays (should increase exponentially)</li>
+                            <li>Verify eventual success</li>
+                        </ol>
+                        <p><strong>Expected Outcomes:</strong></p>
+                        <ul>
+                            <li>Executor retries failed requests (not giving up after first failure)</li>
+                            <li>Retry delays follow exponential backoff (e.g., 1s, 2s, 4s) with jitter</li>
+                            <li>Operation succeeds on 3rd attempt</li>
+                            <li>Total execution time reasonable (not infinite retries)</li>
+                            <li>Audit log shows retry attempts</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="test-case">
+                    <h4>TC-B3-006: Fault Isolation Between Executors</h4>
+                    <div class="test-case-details">
+                        <p><strong>Objective:</strong> Verify failure in one executor doesn't affect others</p>
+                        <p><strong>Prerequisites:</strong> Multiple executors (Calendar, Email, Notes) running concurrently</p>
+                        <p><strong>Test Steps:</strong></p>
+                        <ol>
+                            <li>Send plan with 3 actions: CreateCalendarEvent, SendEmail, CreateNote</li>
+                            <li>Inject fault in Email Executor (e.g., throw exception)</li>
+                            <li>Observe execution of Calendar and Notes executors</li>
+                            <li>Verify only Email action fails, others succeed</li>
+                        </ol>
+                        <p><strong>Expected Outcomes:</strong></p>
+                        <ul>
+                            <li>Calendar event created successfully despite Email failure</li>
+                            <li>Note created successfully despite Email failure</li>
+                            <li>Email action reports failure to Orchestrator</li>
+                            <li>Orchestrator logs partial success (2/3 actions succeeded)</li>
+                            <li>No cascade failure across executors</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="test-case">
+                    <h4>TC-B3-007: Integration Adapter Error Normalization</h4>
+                    <div class="test-case-details">
+                        <p><strong>Objective:</strong> Verify adapters translate provider-specific errors to standard format</p>
+                        <p><strong>Prerequisites:</strong> Adapters for multiple providers (Google, Microsoft)</p>
+                        <p><strong>Test Steps:</strong></p>
+                        <ol>
+                            <li>Trigger error condition in Google adapter (e.g., invalid event time)</li>
+                            <li>Capture error returned to executor</li>
+                            <li>Trigger similar error in Microsoft adapter</li>
+                            <li>Capture error returned to executor</li>
+                            <li>Compare error formats</li>
+                        </ol>
+                        <p><strong>Expected Outcomes:</strong></p>
+                        <ul>
+                            <li>Both adapters return errors in consistent schema (e.g., {code, message, retryable})</li>
+                            <li>Error codes standardized (not raw provider codes)</li>
+                            <li>Executor can handle errors uniformly without provider-specific logic</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="test-environment">
+                <h3>Test Environment</h3>
+                <ul>
+                    <li><strong>Software:</strong> All Capability Executors deployed, Integration Adapters for Google/Microsoft/IMAP configured</li>
+                    <li><strong>Test Accounts:</strong> Google test account, Microsoft test account, IMAP/SMTP test mailbox</li>
+                    <li><strong>Authentication:</strong> OAuth credentials provisioned, token storage (credentials vault) configured</li>
+                    <li><strong>Database:</strong> Audit log storage (separate from Context Store), idempotency key storage</li>
+                    <li><strong>Network:</strong> Internet connectivity to reach external APIs (Google, Microsoft), network fault injection tools</li>
+                    <li><strong>Monitoring:</strong> API call logging, latency tracking, error rate dashboards</li>
+                </ul>
+            </div>
+
+            <div class="overhead-software">
+                <h3>Overhead Software (Drivers, Stubs, Mocks)</h3>
+                <ul>
+                    <li><strong>Driver: Action Dispatcher:</strong> Tool to send pre-defined action commands to executors, bypassing Orchestrator/Planner</li>
+                    <li><strong>Mock Integration Adapters:</strong> For tests not requiring real external APIs, mock adapters returning canned success/failure responses</li>
+                    <li><strong>Fault Injector:</strong> Service to induce transient errors (503, timeouts) in adapters for retry testing</li>
+                    <li><strong>Audit Log Validator:</strong> Automated checker to verify audit log entries match expected schema and content</li>
+                    <li><strong>OAuth Token Manager:</strong> Tool to generate/expire test tokens for authentication tests</li>
+                    <li><strong>Test Data Cleanup:</strong> Scripts to delete test calendar events, emails, notes after each test run</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- BUILD 4 -->
+        <section class="build-test-section">
+            <div class="build-test-header">
+                <span class="build-badge">Build 4</span>
+                <h2>Full System Integration with Feedback Loop</h2>
+            </div>
+
+            <div class="test-purpose">
+                <h3>Build Purpose</h3>
+                <p>
+                    Validate the complete end-to-end system including AI auxiliary services (TTS, Summarization, Vision,
+                    Translation, Code Assist), session write path, cross-device continuity, and full user workflows.
+                    Focus on system-level NFRs: latency, resource efficiency, portability, accessibility, and seamless
+                    feedback loop. This is the final integration milestone before validation testing.
+                </p>
+            </div>
+
+            <div class="test-cases">
+                <h3>Test Case Skeletons</h3>
+
+                <div class="test-case">
+                    <h4>TC-B4-001: End-to-End Voice Command with TTS Response</h4>
+                    <div class="test-case-details">
+                        <p><strong>Objective:</strong> Verify complete workflow from voice input to spoken output</p>
+                        <p><strong>Prerequisites:</strong> All modules integrated, real client application</p>
+                        <p><strong>Test Steps:</strong></p>
+                        <ol>
+                            <li>User speaks: "Create a reminder to buy groceries tomorrow at 5pm"</li>
+                            <li>System processes through full pipeline: ASR → NLU → Orchestrator → Planner → Executor</li>
+                            <li>Reminder created successfully</li>
+                            <li>Orchestrator sends confirmation text to TTS service</li>
+                            <li>TTS generates audio response</li>
+                            <li>Client plays audio: "I've created a reminder to buy groceries tomorrow at 5pm"</li>
+                            <li>Measure end-to-end latency</li>
+                        </ol>
+                        <p><strong>Expected Outcomes:</strong></p>
+                        <ul>
+                            <li>Reminder created in system (verifiable via query)</li>
+                            <li>TTS audio response played to user</li>
+                            <li>Audio content matches expected confirmation</li>
+                            <li>End-to-end latency from speech end to audio playback start &lt; 2 seconds (NFR-1)</li>
+                            <li>Audio quality acceptable (no robotic artifacts, clear pronunciation)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="test-case">
+                    <h4>TC-B4-002: Streaming TTS for Low Latency</h4>
+                    <div class="test-case-details">
+                        <p><strong>Objective:</strong> Verify TTS streams audio progressively to minimize perceived latency</p>
+                        <p><strong>Prerequisites:</strong> TTS service configured for streaming</p>
+                        <p><strong>Test Steps:</strong></p>
+                        <ol>
+                            <li>Generate long text response (e.g., meeting summary)</li>
+                            <li>Orchestrator sends text to TTS service</li>
+                            <li>Observe client audio playback start time</li>
+                            <li>Measure time from first byte of text sent to first audio chunk received</li>
+                        </ol>
+                        <p><strong>Expected Outcomes:</strong></p>
+                        <ul>
+                            <li>Audio playback begins before entire text is converted (streaming confirmed)</li>
+                            <li>First audio chunk arrives within 500ms of text submission</li>
+                            <li>User perceives immediate response (no long silence)</li>
+                            <li>No audio stuttering or buffering gaps during playback</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="test-case">
+                    <h4>TC-B4-003: Meeting Notes Summarization</h4>
+                    <div class="test-case-details">
+                        <p><strong>Objective:</strong> Verify Summarization service condenses long text effectively</p>
+                        <p><strong>Prerequisites:</strong> Summarization service deployed, test transcript prepared</p>
+                        <p><strong>Test Steps:</strong></p>
+                        <ol>
+                            <li>User requests: "Summarize my meeting notes from yesterday"</li>
+                            <li>Orchestrator retrieves notes from Context Store (long text, ~2000 words)</li>
+                            <li>Orchestrator sends notes to Summarization service</li>
+                            <li>Summarization returns condensed version (~200 words)</li>
+                            <li>System presents summary to user via TTS or text</li>
+                            <li>Manually evaluate summary quality (contains key points, no hallucinations)</li>
+                        </ol>
+                        <p><strong>Expected Outcomes:</strong></p>
+                        <ul>
+                            <li>Summary length significantly reduced (90% compression)</li>
+                            <li>Key information preserved (action items, decisions, attendees)</li>
+                            <li>No fabricated details not present in original</li>
+                            <li>Summary delivered to user within 3 seconds of request</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="test-case">
+                    <h4>TC-B4-004: Image Recognition (OCR) Integration</h4>
+                    <div class="test-case-details">
+                        <p><strong>Objective:</strong> Verify Vision service extracts text from images</p>
+                        <p><strong>Prerequisites:</strong> Vision/OCR service deployed, mobile client with camera permission</p>
+                        <p><strong>Test Steps:</strong></p>
+                        <ol>
+                            <li>User takes photo of whiteboard with written notes</li>
+                            <li>User requests: "Extract text from this image"</li>
+                            <li>Client uploads image to Gateway</li>
+                            <li>Orchestrator sends image to Vision service</li>
+                            <li>Vision service performs OCR, returns extracted text</li>
+                            <li>System displays or reads extracted text to user</li>
+                        </ol>
+                        <p><strong>Expected Outcomes:</strong></p>
+                        <ul>
+                            <li>Camera permission requested and granted (NFR-8: &lt;2s initialization)</li>
+                            <li>OCR extracts text with reasonable accuracy (&gt;90% for clear images)</li>
+                            <li>Extracted text returned to user</li>
+                            <li>Total processing time (upload to result) &lt;5 seconds</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="test-case">
+                    <h4>TC-B4-005: Multi-Language Translation</h4>
+                    <div class="test-case-details">
+                        <p><strong>Objective:</strong> Verify Translation service converts text/speech between languages</p>
+                        <p><strong>Prerequisites:</strong> Translation service configured for multiple languages</p>
+                        <p><strong>Test Steps:</strong></p>
+                        <ol>
+                            <li>User speaks in English: "Translate 'Hello, how are you?' to Spanish"</li>
+                            <li>NLU extracts intent TranslateText, entities (source: "Hello, how are you?", target_language: Spanish)</li>
+                            <li>Orchestrator sends to Translation service</li>
+                            <li>Translation returns Spanish text</li>
+                            <li>System presents via TTS in Spanish or text display</li>
+                        </ol>
+                        <p><strong>Expected Outcomes:</strong></p>
+                        <ul>
+                            <li>Translation accurate: "Hola, ¿cómo estás?"</li>
+                            <li>TTS pronunciation correct for Spanish</li>
+                            <li>Latency &lt;2 seconds for short phrases</li>
+                            <li>Supports multiple language pairs (test 3-5 languages)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="test-case">
+                    <h4>TC-B4-006: Code Assistance Query</h4>
+                    <div class="test-case-details">
+                        <p><strong>Objective:</strong> Verify Code Assist service provides contextual programming help</p>
+                        <p><strong>Prerequisites:</strong> Code Assist service deployed (e.g., AI model for code)</p>
+                        <p><strong>Test Steps:</strong></p>
+                        <ol>
+                            <li>User requests: "How do I reverse a string in Python?"</li>
+                            <li>NLU identifies CodeAssist intent</li>
+                            <li>Orchestrator sends query to Code Assist service</li>
+                            <li>Service returns code snippet and explanation</li>
+                            <li>System displays result to user</li>
+                        </ol>
+                        <p><strong>Expected Outcomes:</strong></p>
+                        <ul>
+                            <li>Code snippet provided (e.g., "string[::-1]")</li>
+                            <li>Explanation included (slicing with negative step)</li>
+                            <li>Response accurate and helpful</li>
+                            <li>Latency &lt;3 seconds</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="test-case">
+                    <h4>TC-B4-007: Cross-Device Session Continuity</h4>
+                    <div class="test-case-details">
+                        <p><strong>Objective:</strong> Verify session context persists and transfers across devices</p>
+                        <p><strong>Prerequisites:</strong> Same user account on desktop and mobile clients</p>
+                        <p><strong>Test Steps:</strong></p>
+                        <ol>
+                            <li>User creates reminder on desktop client</li>
+                            <li>System writes session update to Context Store</li>
+                            <li>User switches to mobile client</li>
+                            <li>Mobile client loads session from Context Store</li>
+                            <li>User asks: "What reminders do I have?" on mobile</li>
+                            <li>Verify reminder created on desktop appears in mobile response</li>
+                        </ol>
+                        <p><strong>Expected Outcomes:</strong></p>
+                        <ul>
+                            <li>Session context synchronized between devices</li>
+                            <li>Mobile client retrieves desktop session data</li>
+                            <li>Reminder visible on both devices</li>
+                            <li>No data loss during device switch</li>
+                            <li>Session handoff seamless (&lt;2s to load context on new device)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="test-case">
+                    <h4>TC-B4-008: System Startup Time (NFR-5)</h4>
+                    <div class="test-case-details">
+                        <p><strong>Objective:</strong> Verify system becomes operational within 30 seconds</p>
+                        <p><strong>Prerequisites:</strong> Client application not running, network available</p>
+                        <p><strong>Test Steps:</strong></p>
+                        <ol>
+                            <li>Launch client application</li>
+                            <li>Start timer</li>
+                            <li>Wait for "ready to listen" indicator (wake word active)</li>
+                            <li>Stop timer</li>
+                            <li>Record startup time</li>
+                        </ol>
+                        <p><strong>Expected Outcomes:</strong></p>
+                        <ul>
+                            <li>Client fully operational (can accept commands) within 30 seconds (NFR-5)</li>
+                            <li>All services connected (Gateway, Orchestrator reachable)</li>
+                            <li>User can issue commands immediately after startup</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="test-case">
+                    <h4>TC-B4-009: Resource Efficiency (NFR-7)</h4>
+                    <div class="test-case-details">
+                        <p><strong>Objective:</strong> Verify system memory footprint remains under 10 GB</p>
+                        <p><strong>Prerequisites:</strong> Standard consumer hardware, monitoring tools (Task Manager, Activity Monitor)</p>
+                        <p><strong>Test Steps:</strong></p>
+                        <ol>
+                            <li>Install client on fresh system</li>
+                            <li>Measure total disk usage (installation + cache)</li>
+                            <li>Launch client and use for 1 hour (varied commands)</li>
+                            <li>Monitor RAM usage during operation</li>
+                        </ol>
+                        <p><strong>Expected Outcomes:</strong></p>
+                        <ul>
+                            <li>Total installation size &lt; 10 GB (NFR-7)</li>
+                            <li>RAM usage during operation &lt; 2 GB (reasonable for desktop/laptop)</li>
+                            <li>No memory leaks (RAM usage stable over time, not continuously increasing)</li>
+                            <li>CPU usage acceptable (&lt;20% average on standard hardware)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="test-case">
+                    <h4>TC-B4-010: Accessibility - Screen Reader Compatibility</h4>
+                    <div class="test-case-details">
+                        <p><strong>Objective:</strong> Verify web client works with screen readers (NFR-9: WCAG 2.1)</p>
+                        <p><strong>Prerequisites:</strong> Web client, screen reader software (NVDA, JAWS, or VoiceOver)</p>
+                        <p><strong>Test Steps:</strong></p>
+                        <ol>
+                            <li>Launch web client with screen reader active</li>
+                            <li>Navigate UI using keyboard only (no mouse)</li>
+                            <li>Verify all interactive elements announced by screen reader</li>
+                            <li>Submit text command via keyboard</li>
+                            <li>Verify response text read by screen reader</li>
+                        </ol>
+                        <p><strong>Expected Outcomes:</strong></p>
+                        <ul>
+                            <li>All buttons, inputs, and controls have accessible labels</li>
+                            <li>Screen reader announces element types and states</li>
+                            <li>Keyboard navigation functional (Tab, Enter, Arrow keys)</li>
+                            <li>Response text read aloud by screen reader</li>
+                            <li>No accessibility errors in automated audit (e.g., axe-core)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="test-environment">
+                <h3>Test Environment</h3>
+                <ul>
+                    <li><strong>Hardware:</strong> Desktop, laptop, mobile devices (iOS/Android), varied network conditions (WiFi, cellular)</li>
+                    <li><strong>Software:</strong> All modules deployed, all AI services active (ASR, NLU, TTS, Summarization, Vision, Translation, Code Assist), Context Store with full read/write, Audit logs enabled</li>
+                    <li><strong>Clients:</strong> Desktop app (Windows/Mac), mobile apps (iOS/Android), web client (multiple browsers)</li>
+                    <li><strong>External Services:</strong> Real Google/Microsoft accounts for integration testing</li>
+                    <li><strong>Accessibility Tools:</strong> Screen readers (NVDA, JAWS, VoiceOver), automated accessibility scanners (axe-core, Lighthouse)</li>
+                    <li><strong>Monitoring:</strong> End-to-end latency tracking, resource usage profiling, error rate dashboards</li>
+                </ul>
+            </div>
+
+            <div class="overhead-software">
+                <h3>Overhead Software (Drivers, Stubs, Mocks)</h3>
+                <ul>
+                    <li><strong>End-to-End Test Harness:</strong> Automated framework to execute full user scenarios and measure latencies</li>
+                    <li><strong>Performance Profiler:</strong> Tools to track CPU, RAM, network usage over extended sessions</li>
+                    <li><strong>Mock AI Services (optional):</strong> For deterministic testing, mocks returning known outputs (bypass real ML model variability)</li>
+                    <li><strong>Session Fixtures:</strong> Pre-populated Context Store data to simulate returning users with history</li>
+                    <li><strong>Audio Analysis Tools:</strong> To verify TTS output quality and streaming behavior</li>
+                    <li><strong>Accessibility Validators:</strong> Automated tools (axe-core, pa11y) to check WCAG compliance</li>
+                    <li><strong>Cross-Device Sync Monitor:</strong> Tool to verify Context Store writes and reads across simultaneous device connections</li>
+                </ul>
+            </div>
+        </section>
+
+        <div class="navigation-buttons">
+            <a href="integration-builds.html" class="btn btn-secondary">← Back to Integration Builds</a>
+            <a href="validation-tests.html" class="btn btn-primary">Next: Validation Tests →</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>ASRO Team - Group 8</h3>
+                <p>Agentic Slurm Resource Optimizer</p>
+            </div>
+            <div class="footer-section">
+                <h4>Test Procedures</h4>
+                <ul>
+                    <li>Build 1: Input Pipeline</li>
+                    <li>Build 2: Orchestration</li>
+                    <li>Build 3: Execution</li>
+                    <li>Build 4: Full System</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="test-scope.html">Test Scope</a></li>
+                    <li><a href="validation-tests.html">Validation Tests</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 ASRO Team. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

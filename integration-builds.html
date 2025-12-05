@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integration Builds - AI Secretary Test Plan | ASRO Team</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">
+                <h1>ASRO Team</h1>
+                <p class="subtitle">Agentic Slurm Resource Optimizer</p>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="test-scope.html">Test Scope</a></li>
+                <li><a href="integration-builds.html" class="active">Integration Builds</a></li>
+                <li><a href="test-procedures.html">Test Procedures</a></li>
+                <li><a href="validation-tests.html">Validation Tests</a></li>
+                <li><a href="team.html">Team</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container page-content">
+        <div class="page-header">
+            <h1>Integration Build Plan</h1>
+            <p class="page-description">
+                Incremental integration strategy with four carefully planned build phases
+            </p>
+        </div>
+
+        <section class="content-card">
+            <h2>Integration Strategy Overview</h2>
+            <p>
+                Our integration testing follows a <strong>bottom-up incremental integration</strong> approach with
+                functional groupings. We have designed four integration builds that progressively combine modules
+                while minimizing complexity and risk at each stage. This strategy allows us to:
+            </p>
+            <ul>
+                <li>Validate core data flows before adding complexity</li>
+                <li>Isolate integration issues to specific module boundaries</li>
+                <li>Build confidence incrementally through working subsystems</li>
+                <li>Parallelize some testing activities across independent builds</li>
+                <li>Reduce debugging complexity by limiting the number of new integrations per phase</li>
+            </ul>
+            <p>
+                Each build is designed around the AI Secretary's four functional categories, with builds corresponding
+                to major integration milestones in the system's conversational flow.
+            </p>
+        </section>
+
+        <section class="timeline-visual-section">
+            <h2 class="section-title">Integration Testing Timeline</h2>
+            <p class="timeline-intro">
+                Our integration testing is structured across <strong>10 weeks</strong> with five distinct phases,
+                each building upon the previous to create a fully integrated and validated system. This phased
+                approach ensures systematic testing coverage while maintaining schedule predictability.
+            </p>
+
+            <div class="vertical-timeline">
+                <div class="timeline-phase">
+                    <div class="phase-marker phase-1">
+                        <span class="phase-number">Phase 1</span>
+                    </div>
+                    <div class="phase-content">
+                        <div class="phase-header">
+                            <h3>Core Input & Understanding</h3>
+                            <span class="phase-duration">Week 1-2</span>
+                        </div>
+                        <p class="phase-description">
+                            Establish and test the foundation of user input processing. Integration of Client modules
+                            with API Gateway, ASR (Speech-to-Text), and NLU services. Focus on voice/text capture,
+                            transcription accuracy, and intent extraction.
+                        </p>
+                        <div class="phase-deliverables">
+                            <strong>Key Deliverables:</strong>
+                            <ul>
+                                <li>Client-Gateway communication verified across all platforms</li>
+                                <li>ASR streaming functionality validated</li>
+                                <li>NLU intent classification accuracy baseline established</li>
+                                <li>Multi-modal input testing completed (voice + text)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-phase">
+                    <div class="phase-marker phase-2">
+                        <span class="phase-number">Phase 2</span>
+                    </div>
+                    <div class="phase-content">
+                        <div class="phase-header">
+                            <h3>Planning & Orchestration</h3>
+                            <span class="phase-duration">Week 3-4</span>
+                        </div>
+                        <p class="phase-description">
+                            Integrate the cognitive core—Conversation Orchestrator, Planner, and Context Store.
+                            Validate step graph generation, multi-turn dialog handling, confirmation workflows,
+                            and session memory persistence.
+                        </p>
+                        <div class="phase-deliverables">
+                            <strong>Key Deliverables:</strong>
+                            <ul>
+                                <li>Orchestrator event-driven architecture validated</li>
+                                <li>Planner step graph correctness verified</li>
+                                <li>Multi-turn clarification dialogs tested</li>
+                                <li>Context Store read operations confirmed</li>
+                                <li>Policy Guard confirmation workflows functional</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-phase">
+                    <div class="phase-marker phase-3">
+                        <span class="phase-number">Phase 3</span>
+                    </div>
+                    <div class="phase-content">
+                        <div class="phase-header">
+                            <h3>Capability Execution</h3>
+                            <span class="phase-duration">Week 5-6</span>
+                        </div>
+                        <p class="phase-description">
+                            Test action execution layer with all Capability Executors (Calendar, Email, Notes, Tasks)
+                            and Integration Adapters. Validate external API connectivity, OAuth flows, retry logic,
+                            idempotency, and audit logging.
+                        </p>
+                        <div class="phase-deliverables">
+                            <strong>Key Deliverables:</strong>
+                            <ul>
+                                <li>Calendar operations with Google/Microsoft APIs tested</li>
+                                <li>Email/messaging workflows with confirmation verified</li>
+                                <li>Notes and task management executors validated</li>
+                                <li>OAuth 2.0 authentication flows confirmed</li>
+                                <li>Idempotent writes and retry mechanisms tested</li>
+                                <li>Audit log completeness verified</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-phase">
+                    <div class="phase-marker phase-4">
+                        <span class="phase-number">Phase 4</span>
+                    </div>
+                    <div class="phase-content">
+                        <div class="phase-header">
+                            <h3>Feedback & Storage</h3>
+                            <span class="phase-duration">Week 7-8</span>
+                        </div>
+                        <p class="phase-description">
+                            Integrate AI Auxiliary Services (TTS, Summarization, Vision, Translation, Code Assist)
+                            and complete the feedback loop. Test streaming TTS, summarization accuracy, OCR functionality,
+                            and session write operations.
+                        </p>
+                        <div class="phase-deliverables">
+                            <strong>Key Deliverables:</strong>
+                            <ul>
+                                <li>Text-to-Speech streaming validated</li>
+                                <li>Summarization service accuracy tested</li>
+                                <li>Image recognition (OCR) functionality verified</li>
+                                <li>Translation services tested across multiple languages</li>
+                                <li>Code assistance capabilities validated</li>
+                                <li>Context Store write path confirmed</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-phase">
+                    <div class="phase-marker phase-5">
+                        <span class="phase-number">Phase 5</span>
+                    </div>
+                    <div class="phase-content">
+                        <div class="phase-header">
+                            <h3>End-to-End Integration</h3>
+                            <span class="phase-duration">Week 9-10</span>
+                        </div>
+                        <p class="phase-description">
+                            Complete system integration with all modules working together. Execute comprehensive
+                            end-to-end scenarios, validate system-level NFRs (latency, resource efficiency, portability),
+                            and perform cross-device testing. Final validation before full system validation testing.
+                        </p>
+                        <div class="phase-deliverables">
+                            <strong>Key Deliverables:</strong>
+                            <ul>
+                                <li>End-to-end user workflows validated across all use cases</li>
+                                <li>System-level performance verified (NFR-1: &lt;2s response time)</li>
+                                <li>Cross-platform consistency confirmed (desktop, mobile, web)</li>
+                                <li>Cross-device session continuity tested</li>
+                                <li>Resource efficiency validated (NFR-7: &lt;10GB, stable memory)</li>
+                                <li>Accessibility features verified (NFR-9: WCAG 2.1)</li>
+                                <li>Complete integration test report delivered</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-summary-card">
+                <h3>Testing Timeline Summary</h3>
+                <div class="summary-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">10 Weeks</div>
+                        <div class="stat-label">Total Duration</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">5 Phases</div>
+                        <div class="stat-label">Integration Phases</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">8 Modules</div>
+                        <div class="stat-label">System Components</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">4 Builds</div>
+                        <div class="stat-label">Integration Builds</div>
+                    </div>
+                </div>
+                <p class="summary-note">
+                    <strong>Note:</strong> This timeline represents the integration testing phase only. It assumes
+                    unit testing is complete before Phase 1 begins. Validation testing (56 test cases) follows
+                    after Phase 5 completion and requires an additional 2-3 weeks for full requirements coverage.
+                </p>
+            </div>
+        </section>
+
+        <div class="build-timeline">
+            <div class="timeline-item">
+                <div class="timeline-marker">1</div>
+                <div class="timeline-content">
+                    <h3>Input & Understanding</h3>
+                    <p>Client → Gateway → ASR → NLU</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-marker">2</div>
+                <div class="timeline-content">
+                    <h3>Planning & Context</h3>
+                    <p>Orchestrator + Planner + Context Store</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-marker">3</div>
+                <div class="timeline-content">
+                    <h3>Capability Execution</h3>
+                    <p>Executors + Integration Adapters + Audit</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-marker">4</div>
+                <div class="timeline-content">
+                    <h3>Full System Integration</h3>
+                    <p>All modules + AI Services + Feedback Loop</p>
+                </div>
+            </div>
+        </div>
+
+        <section class="build-section">
+            <div class="build-header">
+                <span class="build-number">Build 1</span>
+                <h2>Input Capture and Understanding Pipeline</h2>
+            </div>
+
+            <div class="build-details">
+                <div class="build-info-grid">
+                    <div class="build-info-item">
+                        <h4>Modules Included</h4>
+                        <ul>
+                            <li>M1: Clients (Desktop, Mobile, Web)</li>
+                            <li>M2: API Gateway</li>
+                            <li>M4a: NLU Service</li>
+                            <li>M5a: ASR (Speech-to-Text)</li>
+                        </ul>
+                    </div>
+                    <div class="build-info-item">
+                        <h4>Integration Points</h4>
+                        <ul>
+                            <li>Client → API Gateway (REST/WebSocket)</li>
+                            <li>Gateway → ASR (audio streaming)</li>
+                            <li>ASR → NLU (text transcription)</li>
+                            <li>NLU output (structured intent/entities)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="build-objective">
+                    <h4>Build Objective</h4>
+                    <p>
+                        Establish and validate the <strong>perception layer</strong> of the AI Secretary. This build
+                        focuses on the system's ability to reliably capture user input (voice or text), convert it to
+                        structured information, and extract actionable intents and entities. Success criteria include
+                        low-latency streaming, accurate transcription, correct intent classification, and proper
+                        handling of multi-modal inputs.
+                    </p>
+                </div>
+
+                <div class="build-rationale">
+                    <h4>Rationale</h4>
+                    <p>
+                        <strong>Why this build first?</strong> The input pipeline is the foundation of all user
+                        interactions. By testing Client-Gateway-ASR-NLU integration first, we validate the system's
+                        "ears and eyes" before introducing complex decision-making logic. This build has minimal
+                        dependencies and can be tested with simple stub responses, making it ideal as a starting point.
+                        Early validation of NFR-1 (latency &lt;2s) and NFR-3 (portability) is critical since these
+                        characteristics affect all downstream modules.
+                    </p>
+                    <p>
+                        This build also allows us to verify critical streaming behaviors (partial ASR transcripts,
+                        WebSocket stability) that are hard to test later when integrated with complex orchestration logic.
+                    </p>
+                </div>
+
+                <div class="build-risks">
+                    <h4>Key Risks Addressed</h4>
+                    <ul>
+                        <li>Audio streaming latency exceeding 2-second target</li>
+                        <li>ASR transcription errors propagating to NLU</li>
+                        <li>Client platform inconsistencies (desktop vs. mobile vs. web)</li>
+                        <li>Network interruptions during voice input</li>
+                        <li>Intent classification confidence thresholds incorrectly calibrated</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="build-section">
+            <div class="build-header">
+                <span class="build-number">Build 2</span>
+                <h2>Orchestration, Planning, and Context Management</h2>
+            </div>
+
+            <div class="build-details">
+                <div class="build-info-grid">
+                    <div class="build-info-item">
+                        <h4>Modules Included</h4>
+                        <ul>
+                            <li><strong>New:</strong> M3: Conversation Orchestrator</li>
+                            <li><strong>New:</strong> M4b: Planner</li>
+                            <li><strong>New:</strong> M8a: Context Store (Read Path)</li>
+                            <li><strong>From Build 1:</strong> NLU output interface</li>
+                        </ul>
+                    </div>
+                    <div class="build-info-item">
+                        <h4>Integration Points</h4>
+                        <ul>
+                            <li>NLU → Orchestrator (intent delivery)</li>
+                            <li>Orchestrator → Planner (plan generation)</li>
+                            <li>Orchestrator → Context Store (session read)</li>
+                            <li>Orchestrator → Policy Guard (permission check)</li>
+                            <li>Orchestrator → Client (confirmation prompts)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="build-objective">
+                    <h4>Build Objective</h4>
+                    <p>
+                        Validate the <strong>reasoning and decision-making core</strong> of the AI Secretary. This build
+                        tests the system's ability to convert user intents into executable plans, enforce safety policies,
+                        manage multi-turn conversations, and maintain session context. Success criteria include correct
+                        step graph generation, proper confirmation workflows for high-risk actions, and seamless context
+                        retrieval across sessions.
+                    </p>
+                </div>
+
+                <div class="build-rationale">
+                    <h4>Rationale</h4>
+                    <p>
+                        <strong>Why this build second?</strong> After validating input processing, the next logical
+                        step is to test the system's "brain"—the orchestration and planning layer. This build introduces
+                        the most complex module (Orchestrator) but does so in isolation from execution complexity.
+                        By stubbing out capability executors, we can focus purely on testing dialog flow, plan correctness,
+                        and context propagation.
+                    </p>
+                    <p>
+                        This sequencing allows us to verify critical FR-6, FR-8, FR-9 (calendar, notes, tasks) planning
+                        logic and FR-11 (confirmation) workflows before adding the complexity of actual external API calls.
+                        It also validates the event-driven architecture's core message passing patterns.
+                    </p>
+                </div>
+
+                <div class="build-risks">
+                    <h4>Key Risks Addressed</h4>
+                    <ul>
+                        <li>Orchestrator state machine errors in multi-turn dialogs</li>
+                        <li>Planner generating incorrect step dependencies</li>
+                        <li>Context Store read failures causing session loss</li>
+                        <li>Policy Guard incorrectly blocking safe operations</li>
+                        <li>Confirmation prompts not properly awaiting user responses</li>
+                        <li>Race conditions in asynchronous event handling</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="build-section">
+            <div class="build-header">
+                <span class="build-number">Build 3</span>
+                <h2>Capability Execution and External Integration</h2>
+            </div>
+
+            <div class="build-details">
+                <div class="build-info-grid">
+                    <div class="build-info-item">
+                        <h4>Modules Included</h4>
+                        <ul>
+                            <li><strong>New:</strong> M6: Capability Executors (Calendar, Email, Notes, Tasks, etc.)</li>
+                            <li><strong>New:</strong> M7: Integration Adapters (Google, Microsoft, IMAP, SMS)</li>
+                            <li><strong>New:</strong> M8b: Audit Logs (Write Path)</li>
+                            <li><strong>From Build 2:</strong> Orchestrator → Executor interface</li>
+                        </ul>
+                    </div>
+                    <div class="build-info-item">
+                        <h4>Integration Points</h4>
+                        <ul>
+                            <li>Orchestrator → Capability Executors (action dispatch)</li>
+                            <li>Executors → Integration Adapters (external API calls)</li>
+                            <li>Executors → Audit Logs (operation recording)</li>
+                            <li>Integration Adapters → External Services (Google, Outlook, etc.)</li>
+                            <li>Error propagation back to Orchestrator</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="build-objective">
+                    <h4>Build Objective</h4>
+                    <p>
+                        Validate the <strong>action execution layer</strong> and external service integration. This build
+                        tests the system's ability to reliably perform calendar operations, send emails/messages, manage
+                        notes and tasks, and interact with third-party APIs. Success criteria include idempotent writes,
+                        proper retry logic, fault isolation between executors, correct OAuth token handling, and complete
+                        audit logging of all operations.
+                    </p>
+                </div>
+
+                <div class="build-rationale">
+                    <h4>Rationale</h4>
+                    <p>
+                        <strong>Why this build third?</strong> With the input pipeline (Build 1) and planning logic
+                        (Build 2) validated, we can now safely test actual execution. This build represents the system's
+                        "hands"—the components that make real changes to user data and external systems. Testing this
+                        layer separately allows us to focus on reliability patterns (retries, idempotency, compensation)
+                        and security (OAuth, encryption, least privilege) without the distraction of input/planning bugs.
+                    </p>
+                    <p>
+                        This build is particularly important for validating NFR-2 (security), NFR-6 (fault tolerance),
+                        NFR-10 (auditability), and NFR-11 (authentication). By using sandbox/test accounts for external
+                        services, we can safely test real API interactions without risking production data.
+                    </p>
+                </div>
+
+                <div class="build-risks">
+                    <h4>Key Risks Addressed</h4>
+                    <ul>
+                        <li>Integration Adapter authentication failures (expired tokens, OAuth refresh)</li>
+                        <li>Executor non-idempotent writes causing duplicate calendar events or emails</li>
+                        <li>Failures in one executor cascading to others</li>
+                        <li>Third-party API rate limiting or schema changes</li>
+                        <li>Audit log write failures causing lost accountability</li>
+                        <li>Compensating action failures during error recovery</li>
+                        <li>Insufficient error detail propagating back to users</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="build-section">
+            <div class="build-header">
+                <span class="build-number">Build 4</span>
+                <h2>Full System Integration with Feedback Loop</h2>
+            </div>
+
+            <div class="build-details">
+                <div class="build-info-grid">
+                    <div class="build-info-item">
+                        <h4>Modules Included</h4>
+                        <ul>
+                            <li><strong>New:</strong> M5b: AI Auxiliary Services (TTS, Summarization, Vision, Translation, Code Assist)</li>
+                            <li><strong>New:</strong> M8c: Session/Context Store (Write Path)</li>
+                            <li><strong>All Previous:</strong> Complete Build 1-3 subsystems</li>
+                        </ul>
+                    </div>
+                    <div class="build-info-item">
+                        <h4>Integration Points</h4>
+                        <ul>
+                            <li>Complete end-to-end flow: Client → Gateway → ASR → NLU → Orchestrator → Planner → Executors → Feedback</li>
+                            <li>Orchestrator → AI Services (TTS, Summarization, etc.)</li>
+                            <li>AI Services → Client (audio/text output)</li>
+                            <li>Orchestrator → Context Store (write path, session updates)</li>
+                            <li>Cross-device session handoff</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="build-objective">
+                    <h4>Build Objective</h4>
+                    <p>
+                        Validate the <strong>complete integrated system</strong> with all modules working together in
+                        production-like scenarios. This build tests end-to-end user workflows including feedback generation,
+                        summarization, TTS output, multi-language translation, image recognition, and session persistence.
+                        Success criteria include sub-2-second response times, seamless cross-device continuity, streaming
+                        audio playback, and correct behavior across all supported use cases.
+                    </p>
+                </div>
+
+                <div class="build-rationale">
+                    <h4>Rationale</h4>
+                    <p>
+                        <strong>Why this build last?</strong> The final build integrates the remaining AI auxiliary
+                        services and completes the conversational feedback loop. By deferring these services until Build 4,
+                        we ensure that core functionality (input, planning, execution) is rock-solid before adding the
+                        complexity of multi-modal output, summarization, and translation. This approach minimizes the
+                        risk of late-stage integration failures derailing the entire test effort.
+                    </p>
+                    <p>
+                        Build 4 is also where we validate system-level NFRs that depend on all modules: NFR-1 (end-to-end
+                        latency), NFR-3 (cross-platform portability), NFR-5 (startup time), NFR-7 (resource efficiency),
+                        and NFR-9 (accessibility). This build represents the "dress rehearsal" before full validation testing.
+                    </p>
+                </div>
+
+                <div class="build-risks">
+                    <h4>Key Risks Addressed</h4>
+                    <ul>
+                        <li>End-to-end latency exceeding 2-second target due to cumulative delays</li>
+                        <li>TTS streaming latency degrading user experience</li>
+                        <li>Session write conflicts during concurrent operations</li>
+                        <li>Memory leaks or resource exhaustion over extended sessions</li>
+                        <li>Cross-device session handoff losing context</li>
+                        <li>Summarization or translation errors in non-English languages</li>
+                        <li>Image recognition (OCR) accuracy issues</li>
+                        <li>Accessibility features (screen reader, captions) not working correctly</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-card">
+            <h2>Integration Build Strategy Summary</h2>
+
+            <div class="strategy-comparison">
+                <h3>Why Bottom-Up with Functional Grouping?</h3>
+                <p>We chose this integration strategy over alternatives for the following reasons:</p>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Alternative Strategy</th>
+                            <th>Why We Rejected It</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Big Bang Integration</strong><br>(integrate all modules at once)</td>
+                            <td>Too risky for a system with 8 modules and complex event-driven interactions. Debugging would be nearly impossible with all modules integrated simultaneously. Locating the source of integration failures would require excessive effort.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Strict Top-Down</strong><br>(start with Orchestrator, stub everything below)</td>
+                            <td>Would require extensive stubbing of ASR, NLU, Executors, and AI Services, creating a "mock-heavy" test suite that may not catch real integration issues. Also delays validation of critical input pipeline until very late.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Module-by-Module</strong><br>(add one module at a time regardless of function)</td>
+                            <td>Would create non-functional partial systems (e.g., adding API Gateway before Client yields nothing testable). Our functional grouping ensures each build produces a testable, meaningful subsystem.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Risk-Based</strong><br>(integrate highest-risk modules first)</td>
+                            <td>While we do consider risk (Build 3 addresses security/external integration), pure risk-based ordering would test Executors before validating that plans are correctly generated, leading to cascading failures.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="strategy-benefits">
+                <h3>Benefits of Our Four-Build Approach</h3>
+                <ul>
+                    <li><strong>Incremental Confidence:</strong> Each build produces a working subsystem that can be demonstrated and validated</li>
+                    <li><strong>Early NFR Validation:</strong> Latency (NFR-1), portability (NFR-3), and security (NFR-2) are tested progressively</li>
+                    <li><strong>Reduced Debugging Complexity:</strong> Integration issues are isolated to 2-4 new module boundaries per build</li>
+                    <li><strong>Parallel Testing Potential:</strong> Builds 1 and 2 can be partially parallelized since they have minimal overlap</li>
+                    <li><strong>Natural Checkpoint Gates:</strong> Each build represents a clear milestone where stakeholders can assess progress</li>
+                    <li><strong>Minimal Stubbing:</strong> Bottom-up approach reduces reliance on complex mocks and stubs</li>
+                </ul>
+            </div>
+        </section>
+
+        <div class="navigation-buttons">
+            <a href="test-scope.html" class="btn btn-secondary">← Back to Test Scope</a>
+            <a href="test-procedures.html" class="btn btn-primary">Next: Test Procedures →</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>ASRO Team - Group 8</h3>
+                <p>Agentic Slurm Resource Optimizer</p>
+            </div>
+            <div class="footer-section">
+                <h4>Team Members</h4>
+                <ul>
+                    <li>Gaurav Srivastava</li>
+                    <li>Aafiya Hussain</li>
+                    <li>Najibul Haque Sarker</li>
+                    <li>Zaber Ibn Abdul Hakim</li>
+                    <li>Ali Asgarov</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Integration Builds</h4>
+                <ul>
+                    <li>Build 1: Input & Understanding</li>
+                    <li>Build 2: Planning & Context</li>
+                    <li>Build 3: Execution</li>
+                    <li>Build 4: Full System</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 ASRO Team. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

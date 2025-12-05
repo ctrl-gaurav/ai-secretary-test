@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Scope - AI Secretary Test Plan | ASRO Team</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">
+                <h1>ASRO Team</h1>
+                <p class="subtitle">Agentic Slurm Resource Optimizer</p>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="test-scope.html" class="active">Test Scope</a></li>
+                <li><a href="integration-builds.html">Integration Builds</a></li>
+                <li><a href="test-procedures.html">Test Procedures</a></li>
+                <li><a href="validation-tests.html">Validation Tests</a></li>
+                <li><a href="team.html">Team</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container page-content">
+        <div class="page-header">
+            <h1>Test Scope</h1>
+            <p class="page-description">
+                Defining the boundaries and focus areas for integration and validation testing of the AI Secretary system
+            </p>
+        </div>
+
+        <section class="content-card">
+            <h2>Overview</h2>
+            <p>
+                This test scope document defines the specific functional, performance, and internal design characteristics
+                that will be covered in our integration and validation testing of the AI Secretary system. As specified,
+                our focus is exclusively on <strong>integration testing</strong> (testing module interactions) and
+                <strong>validation testing</strong> (verifying requirements fulfillment). <strong>Unit testing</strong>
+                is explicitly out of scope and assumed to be the responsibility of the development team.
+            </p>
+        </section>
+
+        <section class="scope-section">
+            <h2 class="section-title">1. Functional Characteristics in Scope</h2>
+
+            <div class="scope-category">
+                <h3>1.1 Multi-Modal Input Processing</h3>
+                <div class="scope-details">
+                    <p><strong>Test Focus:</strong> Integration between input modules and understanding layer</p>
+                    <ul>
+                        <li>Voice activation and wake-word detection (FR-1)</li>
+                        <li>Manual text input processing (FR-2)</li>
+                        <li>Speech-to-text transcription accuracy and latency (FR-3)</li>
+                        <li>Client-to-Gateway-to-ASR data flow validation</li>
+                        <li>Audio streaming and partial transcript handling</li>
+                        <li>Proper handling of voice vs. text input mode switching</li>
+                    </ul>
+                    <p><strong>Out of Scope:</strong> Unit-level ASR model accuracy, individual client UI components</p>
+                </div>
+            </div>
+
+            <div class="scope-category">
+                <h3>1.2 Natural Language Understanding & Intent Processing</h3>
+                <div class="scope-details">
+                    <p><strong>Test Focus:</strong> NLU service integration with Conversation Orchestrator and Planner</p>
+                    <ul>
+                        <li>Intent extraction and entity recognition (FR-4, FR-7)</li>
+                        <li>Date/time parsing and normalization</li>
+                        <li>Confidence scoring and disambiguation workflows</li>
+                        <li>Context propagation from previous conversation turns</li>
+                        <li>Multi-turn dialog handling when information is missing</li>
+                        <li>End-to-end flow from user utterance to actionable plan</li>
+                    </ul>
+                    <p><strong>Out of Scope:</strong> Individual NLP model training or tuning, linguistic edge cases</p>
+                </div>
+            </div>
+
+            <div class="scope-category">
+                <h3>1.3 Planning and Confirmation Workflows</h3>
+                <div class="scope-details">
+                    <p><strong>Test Focus:</strong> Orchestrator-Planner-Policy Guard interactions</p>
+                    <ul>
+                        <li>Step graph generation from structured intents (FR-6, FR-8, FR-9)</li>
+                        <li>Dependency ordering and compensating action logic</li>
+                        <li>Confirmation prompts for high-impact operations (FR-11)</li>
+                        <li>Policy enforcement for permissions and risk evaluation</li>
+                        <li>User approval/rejection flow integration</li>
+                        <li>Context reading for session continuity (FR-12)</li>
+                    </ul>
+                    <p><strong>Out of Scope:</strong> Individual policy rule definitions, Planner algorithm optimization</p>
+                </div>
+            </div>
+
+            <div class="scope-category">
+                <h3>1.4 Capability Execution</h3>
+                <div class="scope-details">
+                    <p><strong>Test Focus:</strong> Executor modules and integration adapter interactions</p>
+                    <ul>
+                        <li>Calendar operations: create, modify, cancel events (FR-6)</li>
+                        <li>Note-taking, transcription, and summarization (FR-8)</li>
+                        <li>Reminder and task management CRUD operations (FR-9)</li>
+                        <li>Email and messaging workflows with confirmation (FR-11)</li>
+                        <li>Image recognition and OCR integration (FR-10)</li>
+                        <li>Code assistance invocation (FR-15)</li>
+                        <li>Translation and language conversion (FR-14)</li>
+                        <li>Audio/video recording with permission (FR-16)</li>
+                        <li>Integration adapter connectivity to external services (Google, Microsoft, IMAP)</li>
+                        <li>Idempotent write operations and retry logic</li>
+                        <li>Error propagation and fault isolation between executors</li>
+                    </ul>
+                    <p><strong>Out of Scope:</strong> Third-party API implementation details, individual executor business logic</p>
+                </div>
+            </div>
+
+            <div class="scope-category">
+                <h3>1.5 Feedback and Output Generation</h3>
+                <div class="scope-details">
+                    <p><strong>Test Focus:</strong> AI Services (TTS, Summarization) and Client output delivery</p>
+                    <ul>
+                        <li>Text-to-speech response generation (FR-5)</li>
+                        <li>Streaming TTS for low-latency feedback</li>
+                        <li>Summarization of meeting transcripts and notes (FR-8)</li>
+                        <li>Multi-language translation output (FR-14)</li>
+                        <li>Client rendering of audio and text responses</li>
+                        <li>Response delivery across different client platforms</li>
+                    </ul>
+                    <p><strong>Out of Scope:</strong> TTS voice quality, summarization algorithm details</p>
+                </div>
+            </div>
+
+            <div class="scope-category">
+                <h3>1.6 Data Management and Session Continuity</h3>
+                <div class="scope-details">
+                    <p><strong>Test Focus:</strong> Context Store, Audit Logs, and Data Lifecycle operations</p>
+                    <ul>
+                        <li>Session memory persistence and retrieval (FR-12)</li>
+                        <li>Cross-device session continuity</li>
+                        <li>Audit logging of critical operations</li>
+                        <li>User data export functionality</li>
+                        <li>Data deletion and lifecycle management</li>
+                        <li>Administrative controls for module enable/disable (FR-13)</li>
+                    </ul>
+                    <p><strong>Out of Scope:</strong> Database performance tuning, backup procedures</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="scope-section">
+            <h2 class="section-title">2. Performance Characteristics in Scope</h2>
+
+            <div class="scope-category">
+                <h3>2.1 Latency and Responsiveness</h3>
+                <div class="scope-details">
+                    <ul>
+                        <li><strong>End-to-end response time:</strong> Measure time from user input to system response under ideal conditions (NFR-1: target &lt;2s)</li>
+                        <li><strong>ASR streaming latency:</strong> Verify interim transcripts arrive progressively</li>
+                        <li><strong>TTS streaming latency:</strong> Confirm audio playback begins before full text generation completes</li>
+                        <li><strong>Startup time:</strong> Verify system becomes operational within 30 seconds (NFR-5)</li>
+                        <li><strong>Camera/OCR initialization:</strong> Ensure vision operations initialize within 2 seconds (NFR-8)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="scope-category">
+                <h3>2.2 Resource Efficiency</h3>
+                <div class="scope-details">
+                    <ul>
+                        <li><strong>Memory footprint:</strong> Verify total installation and cache size remains under 10 GB (NFR-7)</li>
+                        <li><strong>Client performance:</strong> Ensure no degradation on standard consumer hardware</li>
+                        <li><strong>Network bandwidth:</strong> Monitor data usage for voice streaming and API calls</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="scope-category">
+                <h3>2.3 Availability and Fault Tolerance</h3>
+                <div class="scope-details">
+                    <ul>
+                        <li><strong>Online mode:</strong> Verify full functionality with internet connectivity (NFR-6)</li>
+                        <li><strong>Offline mode:</strong> Test limited local mode for basic commands without network</li>
+                        <li><strong>Service degradation:</strong> Test behavior when individual modules fail</li>
+                        <li><strong>Retry mechanisms:</strong> Validate exponential backoff and jitter in executors</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="scope-section">
+            <h2 class="section-title">3. Internal Design Characteristics in Scope</h2>
+
+            <div class="scope-category">
+                <h3>3.1 Module Communication Patterns</h3>
+                <div class="scope-details">
+                    <ul>
+                        <li><strong>Event-driven architecture:</strong> Verify asynchronous message passing between Orchestrator and services</li>
+                        <li><strong>Request/response contracts:</strong> Validate API contracts at module boundaries</li>
+                        <li><strong>Data flow integrity:</strong> Trace data transformation across Client → Gateway → Orchestrator → NLU → Planner → Executors</li>
+                        <li><strong>Context propagation:</strong> Ensure session context flows correctly through all relevant modules</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="scope-category">
+                <h3>3.2 Security and Privacy Architecture</h3>
+                <div class="scope-details">
+                    <ul>
+                        <li><strong>Authentication flow:</strong> Validate OAuth 2.0 token handling in Integration Adapters (NFR-11)</li>
+                        <li><strong>Encryption:</strong> Verify data encryption in transit (TLS) and at rest (NFR-2)</li>
+                        <li><strong>Permission management:</strong> Test administrative controls and least-privilege enforcement</li>
+                        <li><strong>Audit trail integrity:</strong> Confirm immutable logging of high-impact actions (NFR-10)</li>
+                        <li><strong>Local storage option:</strong> Verify privacy-preserving local-only mode (FR-12)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="scope-category">
+                <h3>3.3 Error Handling and Recovery</h3>
+                <div class="scope-details">
+                    <ul>
+                        <li><strong>Fault isolation:</strong> Ensure failures in one Executor don't cascade to others</li>
+                        <li><strong>Compensating actions:</strong> Test rollback logic when multi-step plans fail mid-execution</li>
+                        <li><strong>Error normalization:</strong> Verify Integration Adapters properly translate third-party errors</li>
+                        <li><strong>User error messaging:</strong> Confirm meaningful error messages reach the client</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="scope-category">
+                <h3>3.4 Cross-Platform Portability</h3>
+                <div class="scope-details">
+                    <ul>
+                        <li><strong>Multi-client support:</strong> Validate consistent behavior across Desktop, Mobile, and Web clients (NFR-3)</li>
+                        <li><strong>Platform-specific features:</strong> Test wake-word on mobile, screen reader on web, etc.</li>
+                        <li><strong>Session handoff:</strong> Verify seamless continuation when switching between devices</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="scope-section">
+            <h2 class="section-title">4. Explicitly Out of Scope</h2>
+
+            <div class="out-of-scope">
+                <ul>
+                    <li><strong>Unit Testing:</strong> Testing individual functions, methods, or classes in isolation</li>
+                    <li><strong>UI/UX Testing:</strong> Visual design, accessibility details beyond functional validation, user experience metrics</li>
+                    <li><strong>Performance Tuning:</strong> Database query optimization, caching strategy refinement, model compression</li>
+                    <li><strong>Security Penetration Testing:</strong> Vulnerability scanning, exploit development, threat modeling</li>
+                    <li><strong>Load/Stress Testing:</strong> High-concurrency scenarios, scalability limits, infrastructure capacity</li>
+                    <li><strong>Third-Party Service Testing:</strong> Testing Google Calendar API, Microsoft Outlook API, IMAP servers directly</li>
+                    <li><strong>Model Training:</strong> ASR model accuracy improvement, NLU model fine-tuning, TTS voice customization</li>
+                    <li><strong>Deployment and DevOps:</strong> CI/CD pipeline, containerization, infrastructure provisioning</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="scope-section">
+            <h2 class="section-title">5. Test Approach Summary</h2>
+
+            <div class="content-card">
+                <p>
+                    Our testing approach focuses on <strong>integration testing</strong> to verify that modules interact
+                    correctly through their defined interfaces, and <strong>validation testing</strong> to ensure the
+                    integrated system meets its requirements. We will employ:
+                </p>
+                <ul>
+                    <li><strong>Incremental Integration:</strong> Four-phase build strategy (detailed in Integration Builds section)</li>
+                    <li><strong>Black-box Testing:</strong> Focus on interface contracts and observable behavior</li>
+                    <li><strong>End-to-End Scenarios:</strong> Test complete user workflows from input to output</li>
+                    <li><strong>Test Doubles:</strong> Use of drivers, stubs, and mocks to isolate integration points</li>
+                    <li><strong>Requirements Traceability:</strong> Systematic mapping of test cases to FR/NFR (see Validation Tests)</li>
+                </ul>
+            </div>
+        </section>
+
+        <div class="navigation-buttons">
+            <a href="index.html" class="btn btn-secondary">← Back to Home</a>
+            <a href="integration-builds.html" class="btn btn-primary">Next: Integration Builds →</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>ASRO Team - Group 8</h3>
+                <p>Agentic Slurm Resource Optimizer</p>
+            </div>
+            <div class="footer-section">
+                <h4>Team Members</h4>
+                <ul>
+                    <li>Gaurav Srivastava</li>
+                    <li>Aafiya Hussain</li>
+                    <li>Najibul Haque Sarker</li>
+                    <li>Zaber Ibn Abdul Hakim</li>
+                    <li>Ali Asgarov</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="test-scope.html">Test Scope</a></li>
+                    <li><a href="integration-builds.html">Integration Builds</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 ASRO Team. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

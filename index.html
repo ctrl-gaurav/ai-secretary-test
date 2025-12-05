@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Secretary - Test Plan | ASRO Team</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">
+                <h1>ASRO Team</h1>
+                <p class="subtitle">Agentic Slurm Resource Optimizer</p>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="test-scope.html">Test Scope</a></li>
+                <li><a href="integration-builds.html">Integration Builds</a></li>
+                <li><a href="test-procedures.html">Test Procedures</a></li>
+                <li><a href="validation-tests.html">Validation Tests</a></li>
+                <li><a href="team.html">Team</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Independent Verification & Validation</h1>
+            <h2 class="hero-subtitle">Test Plan for AI Secretary System</h2>
+            <p class="hero-description">
+                A comprehensive integration and validation test plan developed by Group 8
+            </p>
+            <div class="hero-meta">
+                <span class="badge">Project #2</span>
+                <span class="badge">SQA Activities</span>
+                <span class="badge">Group 8</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="intro-section">
+            <div class="content-card">
+                <h2>Executive Summary</h2>
+                <p>
+                    This test plan document provides a structured approach for conducting independent verification
+                    and validation (IV&V) on the <strong>AI Secretary System</strong> designed by another project team.
+                    Our team, ASRO (Agentic Slurm Resource Optimizer), has developed this skeleton test plan focusing
+                    on integration and validation testing strategies.
+                </p>
+                <p>
+                    The AI Secretary is an intelligent personal assistant system that combines voice and text interaction,
+                    natural language understanding, task automation, and multi-platform support. Our test plan covers the
+                    systematic integration of its eight core modules and comprehensive validation against functional and
+                    non-functional requirements.
+                </p>
+            </div>
+        </section>
+
+        <section class="overview-section">
+            <h2 class="section-title">Test Plan Overview</h2>
+            <div class="card-grid">
+                <div class="feature-card">
+                    <div class="card-icon">📋</div>
+                    <h3>Test Scope</h3>
+                    <p>Comprehensive coverage of functional, performance, and internal design characteristics for integration and validation testing.</p>
+                    <a href="test-scope.html" class="card-link">View Details →</a>
+                </div>
+
+                <div class="feature-card">
+                    <div class="card-icon">🔧</div>
+                    <h3>Integration Builds</h3>
+                    <p>Four carefully planned integration phases with incremental build strategy and clear objectives.</p>
+                    <a href="integration-builds.html" class="card-link">View Details →</a>
+                </div>
+
+                <div class="feature-card">
+                    <div class="card-icon">✅</div>
+                    <h3>Test Procedures</h3>
+                    <p>Detailed test case skeletons, drivers, stubs, and test environment specifications for each build phase.</p>
+                    <a href="test-procedures.html" class="card-link">View Details →</a>
+                </div>
+
+                <div class="feature-card">
+                    <div class="card-icon">🎯</div>
+                    <h3>Validation Tests</h3>
+                    <p>Traceability matrix mapping validation test cases to system requirements with comprehensive coverage.</p>
+                    <a href="validation-tests.html" class="card-link">View Details →</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="system-overview">
+            <div class="content-card">
+                <h2>System Under Test: AI Secretary</h2>
+                <p>
+                    The AI Secretary is a multi-modal personal assistant system designed to reduce cognitive load
+                    through intelligent task management, voice interaction, and contextual understanding. The system
+                    architecture comprises eight core modules organized into four functional categories:
+                </p>
+
+                <div class="module-grid">
+                    <div class="module-item">
+                        <h4>Function 1: Input Capture & Understanding</h4>
+                        <ul>
+                            <li>Clients (Desktop, Mobile, Web)</li>
+                            <li>API Gateway</li>
+                            <li>NLU Service</li>
+                            <li>ASR (Speech-to-Text)</li>
+                        </ul>
+                    </div>
+
+                    <div class="module-item">
+                        <h4>Function 2: Planning & Confirmation</h4>
+                        <ul>
+                            <li>Conversation Orchestrator</li>
+                            <li>Planner</li>
+                            <li>Context Store (Read Path)</li>
+                        </ul>
+                    </div>
+
+                    <div class="module-item">
+                        <h4>Function 3: Capability Execution</h4>
+                        <ul>
+                            <li>Capability Executors</li>
+                            <li>Integration Adapters</li>
+                            <li>Audit Logs</li>
+                        </ul>
+                    </div>
+
+                    <div class="module-item">
+                        <h4>Function 4: Feedback & Storage</h4>
+                        <ul>
+                            <li>AI Auxiliary Services</li>
+                            <li>Session/Context Store</li>
+                            <li>Data Management</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="quicklinks-section">
+            <h2 class="section-title">Quick Navigation</h2>
+            <div class="quicklinks-grid">
+                <a href="test-scope.html" class="quicklink-item">
+                    <h3>1. Test Scope</h3>
+                    <p>Functional, performance, and design characteristics to be tested</p>
+                </a>
+                <a href="integration-builds.html" class="quicklink-item">
+                    <h3>2. Integration Builds</h3>
+                    <p>Four-phase incremental integration strategy with rationale</p>
+                </a>
+                <a href="test-procedures.html" class="quicklink-item">
+                    <h3>3. Test Procedures</h3>
+                    <p>Detailed test cases, drivers, and stubs for each build</p>
+                </a>
+                <a href="validation-tests.html" class="quicklink-item">
+                    <h3>4. Validation Tests</h3>
+                    <p>Requirements traceability and end-to-end validation</p>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>ASRO Team - Group 8</h3>
+                <p>Agentic Slurm Resource Optimizer</p>
+            </div>
+            <div class="footer-section">
+                <h4>Team Members</h4>
+                <ul>
+                    <li>Gaurav Srivastava</li>
+                    <li>Aafiya Hussain</li>
+                    <li>Najibul Haque Sarker</li>
+                    <li>Zaber Ibn Abdul Hakim</li>
+                    <li>Ali Asgarov</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Project Information</h4>
+                <p>System Under Test: AI Secretary</p>
+                <p>Test Type: Integration & Validation</p>
+                <p>Project: #2 - IV&V Activities</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 ASRO Team. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
