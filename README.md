@@ -1,13 +1,13 @@
 # AI Secretary Test Plan Website
 
-## ASRO Team - Group 8
+## ASRO Team - Group 5
 **Agentic Slurm Resource Optimizer**
 
 ---
 
 ## 📋 Project Overview
 
-This repository contains a comprehensive **Independent Verification & Validation (IV&V) Test Plan** for the **AI Secretary System**, developed as part of Project #2 for Software Quality Assurance activities.
+This repository contains a comprehensive **Independent Verification & Validation (IV&V) Test Plan** for the **AI Secretary System**, developed as part of Project #25 for Software Quality Assurance activities.
 
 The test plan focuses on **integration testing** and **validation testing**, providing a systematic approach to verify that the AI Secretary system meets all functional and non-functional requirements.
 
@@ -269,7 +269,7 @@ This test plan was created as an academic project for educational purposes.
 
 **Academic Use**: Free to reference for learning about test plan structure and SQA methodologies.
 
-**Attribution**: Please credit ASRO Team (Group 8) if referencing this work.
+**Attribution**: Please credit ASRO Team (Group 5) if referencing this work.
 
 ---
 
@@ -278,7 +278,7 @@ This test plan was created as an academic project for educational purposes.
 For questions or feedback about this test plan:
 
 - Reference the **Team** page for team member information
-- This is an academic project for Project #2 (IV&V Activities)
+- This is an academic project for Project #25 (IV&V Activities)
 - Created for Software Quality Assurance coursework
 
 ---
@@ -286,7 +286,7 @@ For questions or feedback about this test plan:
 ## 🙏 Acknowledgments
 
 We would like to thank:
-- The original **AI Secretary design team** for comprehensive system documentation
+- The original **AI Secretary design team (Group 25)** for comprehensive system documentation
 - Our **instructor** for guidance on IV&V methodologies
 - The **SQA community** for established testing best practices and frameworks
 
@@ -318,7 +318,7 @@ This project demonstrates:
 
 ## 📚 References
 
-- **System Under Test**: AI Secretary Project (Group Project #1)
+- **System Under Test**: AI Secretary Project (Group 25)
 - **Testing Approach**: Bottom-up incremental integration
 - **Standards**: IEEE 829 Test Documentation Standard
 - **Accessibility**: WCAG 2.1 Level AA compliance
@@ -329,7 +329,7 @@ This project demonstrates:
 
 **🎉 Thank you for reviewing our test plan! 🎉**
 
-Developed with dedication by **ASRO Team - Group 8**
+Developed with dedication by **ASRO Team - Group 5**
 
 *Agentic Slurm Resource Optimizer*
 
@@ -343,4 +343,4 @@ Developed with dedication by **ASRO Team - Group 8**
 
 **Last Updated**: December 2025
 **Version**: 1.0
-**Project**: #2 - Independent Verification & Validation
+**Project**: #25 - Independent Verification & Validation

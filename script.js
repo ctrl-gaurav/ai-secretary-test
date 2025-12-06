@@ -1,6 +1,6 @@
 /**
  * AI Secretary Test Plan - Interactive JavaScript
- * ASRO Team - Group 8
+ * ASRO Team - Group 5
  * Enhances user experience with smooth animations and interactive features
  */
 
@@ -432,7 +432,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // CONSOLE MESSAGE
     // =============================================
     console.log('%c🎯 AI Secretary Test Plan', 'font-size: 20px; font-weight: bold; color: #2563eb;');
-    console.log('%cASRO Team - Group 8', 'font-size: 14px; color: #7c3aed;');
+    console.log('%cASRO Team - Group 5', 'font-size: 14px; color: #7c3aed;');
     console.log('Agentic Slurm Resource Optimizer');
     console.log('Comprehensive Integration & Validation Testing');
     console.log('-------------------------------------------');
